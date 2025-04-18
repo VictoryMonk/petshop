@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'db/database_helper.dart';
 import 'screens/login_screen.dart';
+import 'screens/startup_screen.dart';
 import 'services/user_service.dart';
 import 'services/pet_service.dart';
 import 'services/disease_prediction_service.dart';
@@ -26,7 +27,7 @@ class PetCareApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Pet Care App',
         theme: ThemeData(primarySwatch: Colors.teal),
-        home: LoginScreen(),
+        home: StartupScreen(),
       ),
     );
   }

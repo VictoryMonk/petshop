@@ -26,7 +26,7 @@ class DatabaseHelper {
     final path = join(dbPath, fileName);
     return await openDatabase(
       path,
-      version: 2,
+      version: 4,
       onConfigure: _onConfigure,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
@@ -71,6 +71,50 @@ class DatabaseHelper {
         FOREIGN KEY(petId) REFERENCES pets(id) ON DELETE CASCADE
       );
     ''');
+    await db.execute('''
+      CREATE TABLE petshop_services (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT NOT NULL,
+        price REAL NOT NULL,
+        category TEXT NOT NULL
+      );
+    ''');
+    await db.execute('''
+      CREATE TABLE bookings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
+        petId INTEGER NOT NULL,
+        serviceId INTEGER NOT NULL,
+        date TEXT NOT NULL,
+        status TEXT NOT NULL,
+        FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY(petId) REFERENCES pets(id) ON DELETE CASCADE,
+        FOREIGN KEY(serviceId) REFERENCES petshop_services(id) ON DELETE CASCADE
+      );
+    ''');
+    // Seed some example services
+    final existing = await db.query('petshop_services');
+    if (existing.isEmpty) {
+      await db.insert('petshop_services', {
+        'name': 'Grooming',
+        'description': 'Full pet grooming including bath, haircut, and nail trim.',
+        'price': 50.0,
+        'category': 'Grooming',
+      });
+      await db.insert('petshop_services', {
+        'name': 'Boarding',
+        'description': 'Overnight boarding in a safe, clean environment.',
+        'price': 100.0,
+        'category': 'Boarding',
+      });
+      await db.insert('petshop_services', {
+        'name': 'Daycare',
+        'description': 'Daytime care and play for your pet.',
+        'price': 30.0,
+        'category': 'Daycare',
+      });
+    }
 
     // Seed default admin user
     await db.insert('users', {
@@ -83,11 +127,23 @@ class DatabaseHelper {
 
   /// Handle DB migrations when you bump [version]
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {
-      // e.g.
-      // if (oldVersion == 1) {
-      //   await db.execute('ALTER TABLE pets ADD COLUMN vaccinated INTEGER NOT NULL DEFAULT 0;');
-      // }
+    if (oldVersion < 2) {
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS health_records (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          petId INTEGER NOT NULL,
+          type TEXT NOT NULL,
+          description TEXT NOT NULL,
+          date TEXT NOT NULL,
+          FOREIGN KEY(petId) REFERENCES pets(id) ON DELETE CASCADE
+        );
+      ''');
+    }
+    // Add imagePath column to pets if upgrading to version 4
+    if (oldVersion < 4) {
+      await db.execute('''
+        ALTER TABLE pets ADD COLUMN imagePath TEXT;
+      ''');
     }
   }
 

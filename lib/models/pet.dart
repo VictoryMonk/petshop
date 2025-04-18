@@ -5,8 +5,9 @@ class Pet {
   final String breed;
   final int age;
   final int ownerId;
+  final String? imagePath;
 
-  Pet({this.id, required this.name, required this.species, required this.breed, required this.age, required this.ownerId});
+  Pet({this.id, required this.name, required this.species, required this.breed, required this.age, required this.ownerId, this.imagePath});
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -15,6 +16,7 @@ class Pet {
         'breed': breed,
         'age': age,
         'ownerId': ownerId,
+'imagePath': imagePath,
       };
 
   static Pet fromMap(Map<String, dynamic> map) => Pet(
@@ -24,5 +26,6 @@ class Pet {
         breed: map['breed'],
         age: map['age'],
         ownerId: map['ownerId'],
+        imagePath: map['imagePath'],
       );
 }

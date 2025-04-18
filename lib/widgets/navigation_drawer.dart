@@ -4,6 +4,9 @@ import '../screens/admin_dashboard.dart';
 import '../screens/main_dashboard_screen.dart';
 import '../screens/login_screen.dart';
 import '../models/user.dart';
+import '../utils/session_manager.dart';
+import '../screens/petshop_services_screen.dart';
+import '../screens/my_bookings_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   final User? user;
@@ -55,6 +58,36 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.store),
+            title: const Text('Petshop Services'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PetshopServicesScreen(
+                    user: user!,
+                    isAdmin: user?.role == 'admin',
+                  ),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.assignment),
+            title: const Text('My Bookings'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MyBookingsScreen(
+                    user: user!,
+                    isAdmin: user?.role == 'admin',
+                  ),
+                ),
+              );
+            },
+          ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
@@ -62,7 +95,8 @@ class AppDrawer extends StatelessWidget {
               'Logout',
               style: TextStyle(color: Colors.red),
             ),
-            onTap: () {
+            onTap: () async {
+              await SessionManager.clearUserId();
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => LoginScreen()),
                     (route) => false,

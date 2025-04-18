@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/user_service.dart';
+import '../utils/session_manager.dart';
 import 'home_screen.dart';
 import 'registration_screen.dart';
 import 'main_dashboard_screen.dart';
@@ -20,9 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final userService = Provider.of<UserService>(context, listen: false);
     final user = await userService.getUserByEmailAndPassword(email, password);
     if (user != null) {
+      // Save user session for auto-login
+      await SessionManager.saveUserId(user.id!);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => MainDashboardScreen(user: user)),
+        MaterialPageRoute(builder: (_) => HomeScreen(user: user)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
