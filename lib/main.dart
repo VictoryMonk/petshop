@@ -5,7 +5,6 @@ import 'screens/login_screen.dart';
 import 'screens/startup_screen.dart';
 import 'services/user_service.dart';
 import 'services/pet_service.dart';
-import 'services/disease_prediction_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,6 @@ class PetCareApp extends StatelessWidget {
         Provider<DatabaseHelper>.value(value: DatabaseHelper.instance),
         Provider<UserService>(create: (_) => UserService(DatabaseHelper.instance)),
         Provider<PetService>(create: (_) => PetService(DatabaseHelper.instance)),
-        Provider<DiseasePredictionService>(create: (_) => DiseasePredictionService()),
       ],
       child: MaterialApp(
         title: 'Pet Care App',

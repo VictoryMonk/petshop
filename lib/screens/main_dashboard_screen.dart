@@ -48,7 +48,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'User',
+            label: 'Pets',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.medical_services),

@@ -15,7 +15,7 @@ class UserDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'User Dashboard'),
+      appBar: CustomAppBar(title: 'Pets Dashboard'),
       drawer: AppDrawer(user: user),
       body: FutureBuilder<List<Pet>>(
         future: user != null ? PetService(DatabaseHelper.instance).getPetsByOwner(user!.id!) : Future.value([]),
