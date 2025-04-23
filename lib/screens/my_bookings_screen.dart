@@ -8,6 +8,7 @@ import '../services/petshop_service_service.dart';
 import '../services/pet_service.dart';
 import '../db/database_helper.dart';
 import '../widgets/navigation_drawer.dart';
+import 'main_dashboard_screen.dart';
 
 class MyBookingsScreen extends StatefulWidget {
   final User user;
@@ -86,7 +87,23 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Bookings')),
+      appBar: AppBar(
+        title: Text('My Bookings'),
+        backgroundColor: Colors.teal,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => MainDashboardScreen(user: widget.user)),
+                (route) => false,
+              );
+            }
+          },
+        ),
+      ),
       drawer: AppDrawer(user: widget.user),
       body: FutureBuilder<List<Booking>>(
         future: _bookingsFuture,

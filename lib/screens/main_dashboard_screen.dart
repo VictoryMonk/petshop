@@ -23,42 +23,45 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
       VetDashboard(user: widget.user),
       PetshopDashboard(user: widget.user),
     ];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Main Dashboard'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.pets),
-            tooltip: 'My Pets',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PetProfileScreen(user: widget.user!),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: tabs[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Pets',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.medical_services),
-            label: 'Vet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.store),
-            label: 'Petshop',
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => false, // Prevent back navigation
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Main Dashboard'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.pets),
+              tooltip: 'My Pets',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PetProfileScreen(user: widget.user!),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        body: tabs[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Pets',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.medical_services),
+              label: 'Vet',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.store),
+              label: 'Petshop',
+            ),
+          ],
+        ),
       ),
     );
   }

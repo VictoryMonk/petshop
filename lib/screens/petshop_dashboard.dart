@@ -6,6 +6,9 @@ import 'admin_bookings_screen.dart';
 import 'petshop_dashboard_card.dart';
 import 'pet_supplies_screen.dart';
 import 'order_history_screen.dart';
+import 'manage_address_screen.dart';
+import 'book_pet_services_screen.dart';
+import 'my_bookings_screen.dart';
 
 class PetshopDashboard extends StatelessWidget {
   final User? user;
@@ -79,7 +82,12 @@ class PetshopDashboard extends StatelessWidget {
                   DashboardCard(
                     icon: Icons.medical_services,
                     label: 'Book Pet Services',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const BookPetServicesScreen()),
+                      );
+                    },
                   ),
                   DashboardCard(
                     icon: Icons.shopping_cart,
@@ -102,7 +110,20 @@ class PetshopDashboard extends StatelessWidget {
                   DashboardCard(
                     icon: Icons.calendar_today,
                     label: 'My Bookings',
-                    onTap: () {},
+                    onTap: () {
+                      if (user != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MyBookingsScreen(user: user!),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please log in to view your bookings.')),
+                        );
+                      }
+                    },
                   ),
                   DashboardCard(
                     icon: Icons.local_offer,
@@ -112,7 +133,12 @@ class PetshopDashboard extends StatelessWidget {
                   DashboardCard(
                     icon: Icons.person,
                     label: 'Profile',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ManageAddressScreen()),
+                      );
+                    },
                   ),
                 ],
         ),
