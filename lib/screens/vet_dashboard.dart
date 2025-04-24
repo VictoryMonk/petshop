@@ -10,20 +10,23 @@ class VetDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: 'Vet Dashboard'),
-      drawer: AppDrawer(user: user),
-      body: Center(
-        child: ElevatedButton.icon(
-          icon: const Icon(Icons.calendar_today),
-          label: const Text('View Appointments'),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const VetAppointmentsScreen()),
-            );
-          },
+    return WillPopScope(
+      onWillPop: () async => false, // Prevent back/swipe from minimizing
+      child: Scaffold(
+        appBar: CustomAppBar(title: 'Vet Dashboard'),
+        drawer: AppDrawer(user: user),
+        body: Center(
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.calendar_today),
+            label: const Text('View Appointments'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const VetAppointmentsScreen()),
+              );
+            },
+          ),
         ),
       ),
     );
